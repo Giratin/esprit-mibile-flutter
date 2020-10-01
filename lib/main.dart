@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:workshop_flutter/car_view.dart';
+import 'package:workshop_flutter/add_car.dart';
+
+import 'book_car.dart';
+import 'car_view.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,17 +13,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: "Cars Agency",
-        home: Scaffold(
+        /*home: BookCar("BMW", "Serie 3", "Images/bmw.jpg",
+            "This is a desciption or a BMW serie 3", 20)*/
+        home: AddCar()
+        /*home: Scaffold(
             appBar: AppBar(
               title: Text("Hello World"),
             ),
             body: Column(
               children: [
-                CarView("BMW", "Serie 3", "assets/bmw-serie3.jpg"),
-                CarView("Chery", "Tiggo 7", "assets/chery-tiggo7.jpg"),
-                CarView("KIA", "Sportage", "assets/kia-sportage.jpg"),
-                CarView("Peugeot", "208", "assets/peugeot-208.jpg"),
+                CarView("BMW", "Serie 3", "Images/bmw.jpg"),
+                CarView("Chery", "Tiggo 7", "Images/chery.jpg"),
+                CarView("KIA", "Sportage", "Images/kia.jpg"),
+                CarView("Peugeot", "208", "Images/208.jpg"),
               ],
-            )));
+            ))
+            */
+        );
   }
 }

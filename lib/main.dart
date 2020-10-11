@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workshop_flutter/add_car.dart';
+import 'package:workshop_flutter/add_car_form.dart';
 
 import 'book_car.dart';
 import 'car_view.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
         title: "Cars Agency",
         /*home: BookCar("BMW", "Serie 3", "Images/bmw.jpg",
             "This is a desciption or a BMW serie 3", 20)*/
-        home: AddCar()
+        home: AddCar2()
         /*home: Scaffold(
             appBar: AppBar(
               title: Text("Hello World"),

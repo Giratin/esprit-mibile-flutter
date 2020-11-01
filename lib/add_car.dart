@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AddCar extends StatefulWidget {
   @override
@@ -11,7 +13,7 @@ class _AddCarState extends State<AddCar> {
   String marque;
   String description;
   int quantity;
-  GlobalKey<FormState> myKey =new GlobalKey();
+  GlobalKey<FormState> myKey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,14 +29,13 @@ class _AddCarState extends State<AddCar> {
                   margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Image.asset("Images/carshadow.png")),
               TextFormField(
-
                 decoration: InputDecoration(
                     border: OutlineInputBorder(), labelText: "Make"),
                 onSaved: (value) {
-                  marque=value;
+                  marque = value;
                 },
                 validator: (value) {
-                  if(value.isEmpty){
+                  if (value.isEmpty) {
                     return "Required";
                   }
                   return null;
@@ -47,10 +48,10 @@ class _AddCarState extends State<AddCar> {
                 decoration: InputDecoration(
                     labelText: "Model", border: OutlineInputBorder()),
                 onSaved: (value) {
-                  model=value;
+                  model = value;
                 },
                 validator: (value) {
-                  if(value.isEmpty){
+                  if (value.isEmpty) {
                     return "Required";
                   }
                   return null;
@@ -64,13 +65,13 @@ class _AddCarState extends State<AddCar> {
                 decoration: InputDecoration(
                     labelText: "Quantity", border: OutlineInputBorder()),
                 onSaved: (value) {
-                  quantity=int.parse(value);
+                  quantity = int.parse(value);
                 },
                 validator: (value) {
-                  if(value.isEmpty){
+                  if (value.isEmpty) {
                     return "Required";
                   }
-                  if(int.tryParse(value)==null){
+                  if (int.tryParse(value) == null) {
                     return "Must be a number";
                   }
                   return null;
@@ -84,10 +85,10 @@ class _AddCarState extends State<AddCar> {
                 decoration: InputDecoration(
                     labelText: "Description", border: OutlineInputBorder()),
                 onSaved: (value) {
-                  description=value;
+                  description = value;
                 },
                 validator: (value) {
-                  if(value.isEmpty){
+                  if (value.isEmpty) {
                     return "Required";
                   }
                   return null;
@@ -102,19 +103,42 @@ class _AddCarState extends State<AddCar> {
                   RaisedButton(
                     child: Text("Add"),
                     onPressed: () {
-                      if(myKey.currentState.validate()){
+                      if (myKey.currentState.validate()) {
                         myKey.currentState.save();
-                      }
-                      print("marque "+marque+ " model "+model+" quantity "+quantity.toString()+" description "+description);
-                      showDialog(
-                          context:context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("my car"),
-                            content: Text("marque "+marque+ " model "+model+" quantity "+quantity.toString()+" description "+description),
+                        Map<String, dynamic> cardata = {
+                          "make": marque,
+                          "model": model,
+                          "description": description,
+                          "quantity": quantity
+                        };
+                        Map<String, String> headers = {
+                          "Content-Type": "application/json; charset=UTF-8"
+                        };
+                        http
+                            .post("http://51.89.167.87:9090/car",
+                                headers: headers, body: json.encode(cardata))
+                            .then((http.Response reponse) {
+                          String message =
+                              reponse.statusCode == 201 ? "car added" : "error";
+                          print("marque " +
+                              marque +
+                              " model " +
+                              model +
+                              " quantity " +
+                              quantity.toString() +
+                              " description " +
+                              description);
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("info"),
+                                content: Text(message),
+                              );
+                            },
                           );
-                        },
-                      );
+                        });
+                      }
                     },
                   ),
                   RaisedButton(

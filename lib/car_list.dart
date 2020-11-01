@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
 import 'car_view.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class CarList extends StatelessWidget {
-  List<car> cars = [
-    car("BMW", "Serie 3", "Images/bmw.jpg"),
-    car("Chery", "Tiggo 7", "Images/chery.jpg"),
-    car("Kia", "sportage", "Images/kia.jpg"),
-    car("Peugeot", "208", "Images/208.jpg"),
-    car("Peugeot", "208", "Images/208.jpg"),
-    car("Peugeot", "208", "Images/208.jpg"),
-    car("Peugeot", "208", "Images/208.jpg"),
-    car("Peugeot", "208", "Images/208.jpg"),
-    car("Peugeot", "208", "Images/208.jpg"),
-    car("Peugeot", "208", "Images/208.jpg"),
-  ];
+class CarList extends StatefulWidget {
+  @override
+  _CarListState createState() => _CarListState();
+}
+
+class _CarListState extends State<CarList> {
+  List<car> cars = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    http.get("http://51.89.167.87:9090/car").then((http.Response response) {
+      List<dynamic> listofCars = json.decode(response.body);
+      for (int i = 0; i < listofCars.length; i++) {
+        Map<String, dynamic> carlist = listofCars[i];
+        cars.add(car(carlist["make"], carlist["model"],
+            "http://51.89.167.87:9090/img/" + carlist["image"]));
+      }
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

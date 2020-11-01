@@ -12,7 +12,7 @@ class CarView extends StatelessWidget {
     return Card(
       child: Row(
         children: [
-          Image.asset(
+          Image.network(
             image,
             height: 100,
             width: 100,
